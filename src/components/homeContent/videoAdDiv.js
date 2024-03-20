@@ -1,5 +1,5 @@
 import React from "react";
-import "../../components/homeContent/videoAdDiv.css";
+import "./videoAdDiv.css";
 
 function VideoAdDiv() {
   return (
