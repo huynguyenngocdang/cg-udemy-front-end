@@ -1,6 +1,6 @@
 import React from 'react';
-import HeaderPopup from "./header/headerPopup";
-import HeaderPrimary from './header/headerPrimary';
+import HeaderPopup from "../components/header/headerPopup";
+import HeaderPrimary from '../components/header/headerPrimary';
 
 function Header() {
     return (
