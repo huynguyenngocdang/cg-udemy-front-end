@@ -1,5 +1,5 @@
 import React from "react";
-import "../../components/homeContent/udemyForBusiness.css";
+import "./udemyForBusiness.css";
 
 function UdemyForBusiness() {
   return (
