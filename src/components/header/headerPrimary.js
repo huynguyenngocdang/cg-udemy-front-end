@@ -1,10 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./headerPrimary.css";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import _ from 'lodash';
 
 const DropdownItem = ({ title }) => (
   <a className="item" href="#">{title}</a>
@@ -128,56 +129,60 @@ async function fetchProducts(keyword) {
   }
 }
 
+const SearchComponent = () => {
+  const [searchValue, setSearchValue] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [products, setProducts] = useState([]);
 
-// function SearchBox() {
-//   const [value, setValue] = useState('');
-//   const [suggestions, setSuggestions] = useState([]);
-//   const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchSuggestionsAndProducts = async () => {
+      if (searchValue) {
+        const response = await axios.get(`http://65faa0933909a9a65b1af31d.mockapi.io/api/suggesions?search=${searchValue}`);
+        setSuggestions(response.data);
+        const response1 = await axios.get(`http://65faa0933909a9a65b1af31d.mockapi.io/api/products?search=${searchValue}`);
+        setProducts(response1.data);
+      } else {
+        setSuggestions([]);
+        setProducts([]);
+      }
+    };
 
-//   const onSuggestionsFetchRequested = async ({ value }) => {
-//     if (value.length < 2) return;
-//     const products = await fetchProducts(value);
-//     setSuggestions(products);
-//   };
+    const debouncedFn = _.debounce(() => {
+      fetchSuggestionsAndProducts();
+    }, 500); // delay in ms
 
-//   const onSuggestionsClearRequested = () => {
-//     setSuggestions([]);
-//   };
+    debouncedFn();
 
-//   const onChange = (event, { newValue }) => {
-//     setValue(newValue);
-//   };
+    // Cleanup function
+    return () => {
+      debouncedFn.cancel();
+    };
+  }, [searchValue]);
 
-//   const onSuggestionSelected = async (event, { suggestion }) => {
-//     const products = await fetchProducts(suggestion.name);
-//     setProducts(products);
-//   };
 
-//   const inputProps = {
-//     placeholder: 'Tìm kiếm sản phẩm...',
-//     value,
-//     onChange
-//   };
-
-//   return (
-//     <div>
-//       <Autosuggest
-//         suggestions={suggestions}
-//         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-//         onSuggestionsClearRequested={onSuggestionsClearRequested}
-//         getSuggestionValue={(suggestion) => suggestion.name}
-//         renderSuggestion={(suggestion) => <div>{suggestion.name}</div>}
-//         inputProps={inputProps}
-//         onSuggestionSelected={onSuggestionSelected}
-//       />
-//       <div>
-//         {products.map((product) => (
-//           <div key={product.id}>{product.name}</div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <input
+        type="text"
+        className="searchBar"
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
+      />
+      <ul className="itemMatch">
+        {suggestions.map(suggestion => (
+          <div className="groupSearch" key={suggestion.id}>
+            <Link to={`/products/${suggestion.name}`} onClick={() => { setSuggestions([]); setProducts([]); }}><SearchOutlinedIcon className="icon" /> {suggestion.name}</Link>
+          </div>
+        ))}
+        {products.map(product => (
+          <div className="groupSearch" key={product.id}>
+            <Link to={`/product/${product.id}`} onClick={() => { setSuggestions([]); setProducts([]); }}>(ID: {product.id})  {product.name}</Link>
+          </div>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 function HeaderPrimary() {
   return (
@@ -194,7 +199,7 @@ function HeaderPrimary() {
         <div className="searchIcon">
           <SearchOutlinedIcon className="icon" />
         </div>
-        <Search />
+        <SearchComponent />
       </div>
       <div className="right part">
         <div className="businessDiv">
@@ -207,7 +212,7 @@ function HeaderPrimary() {
           <ShoppingCartOutlinedIcon className="icon" />
         </div>
         <div className="login button"><a href="/login">Log In</a></div>
-        <div className="signup button">Sign up</div>
+        <div className="signup button"><a href="/signup">Sign Up</a></div>
       </div>
     </div>
   );
