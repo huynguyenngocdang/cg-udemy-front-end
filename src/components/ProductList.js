@@ -9,6 +9,7 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(5);
   const { keyword } = useParams();
+  const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,10 +32,15 @@ const ProductList = () => {
 
   return (
     <div>
-      {currentProducts.map((product, index) => (
-        <ComplexGrid key={index} name={product.name} id={product.id} description={product.description} price={product.price} />
-      ))}
+      {currentProducts.map((product, index) => {
+
+        const productInCart = cart.find((item) => item.id === product.id);
+        return (
+          <ComplexGrid key={index} name={product.name} productInCart={productInCart} id={product.id} description={product.description} price={product.price} />
+        );
+      })}
       <Pagination productsPerPage={productsPerPage} totalProducts={products.length} paginate={paginate} />
+
     </div>
   );
 };

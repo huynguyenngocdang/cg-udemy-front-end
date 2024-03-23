@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 import { Link } from "react-router-dom";
 import "./Complex.css";
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../slice';
 
 const Img = styled('img')({
     margin: 'auto',
@@ -14,7 +16,8 @@ const Img = styled('img')({
     maxHeight: '100%',
 });
 
-export default function ComplexGrid({ id, name, description, price }) {
+export default function ComplexGrid({ id, name, description, price, productInCart }) {
+    const dispatch = useDispatch();
     return (
         <div>
             <Paper className='complex'
@@ -49,7 +52,9 @@ export default function ComplexGrid({ id, name, description, price }) {
                             </Grid>
                             <Grid item>
                                 <Typography sx={{ cursor: 'pointer' }} variant="body2">
-                                    Add to cart
+                                    <button onClick={() => dispatch(addToCart(product))} disabled={!!productInCart}>
+                                        {productInCart ? 'Already in cart' : 'Add to cart'}
+                                    </button>
                                 </Typography>
                             </Grid>
                         </Grid>

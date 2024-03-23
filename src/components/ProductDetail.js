@@ -7,6 +7,7 @@ import Breadcrumbs from './homeContent/getBreadcrumbs ';
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
