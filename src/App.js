@@ -9,6 +9,7 @@ import ProductDetail from "./components/ProductDetail";
 import ProductList from "./components/ProductList";
 import SignUp from "./signup";
 
+const a = 1;
 function App() {
   return (
     <div className="App">
