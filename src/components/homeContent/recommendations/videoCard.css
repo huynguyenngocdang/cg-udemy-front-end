@@ -9,6 +9,8 @@
 .videoCard img {
   margin-bottom: 8px;
   transition: 100ms;
+  width: 200px;
+  height: 200px;
 }
 
 .videoCard:hover {

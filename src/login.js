@@ -4,12 +4,56 @@ import "./assets/css/output.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGlobe, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { css } from '@emotion/react'
+import { useState, useEffect } from "react";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import axios from 'axios';
 
 let spacing = "#ffffff";
 function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        let loginDto = {
+            username: document.querySelector("input[name='username']").value,
+            password: document.querySelector("input[name='password']").value,
+        };
+        let requestBody = { loginDto };
+        console.log(requestBody);
+        console.log(typeof requestBody);
+
+        try {
+            const response = await axios({
+                url: `http://localhost:8080/api/auth/login`,
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: JSON.stringify(requestBody)
+            });
+
+            localStorage.setItem("accessToken", response.data.token);
+            let result = JSON.stringify(response.data);
+            console.log(result);
+            var msg = new SpeechSynthesisUtterance();
+            msg.text = "Login Successfully";
+            msg.rate = 1;
+            window.speechSynthesis.speak(msg);
+            window.location.href = "/";
+        } catch (error) {
+            var msg = new SpeechSynthesisUtterance();
+            msg.text = "Login fail";
+            msg.rate = 1;
+            window.speechSynthesis.speak(msg);
+            console.error(error);
+        }
+    };
     return (
         <div className="w-full min-h-full text-primary overflow-x-hidden">
-            <div className="w-full h-16 py-3 px-6 shadow flex items-center justify-between gap-8">
+            {/* <div className="w-full h-16 py-3 px-6 shadow flex items-center justify-between gap-8">
                 <img className="py-1.5 h-full w-auto" src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy.svg" alt="Udemy"></img>
                 <a className=" hover:text-secondary-bold" href="">Categories</a>
                 <form
@@ -38,10 +82,10 @@ function Login() {
                         <FontAwesomeIcon icon={faGlobe} />
                     </button>
                 </div>
-            </div>
+            </div> */}
 
             <div className="w-full">
-                <form className="w-96 mx-auto my-12 flex flex-col gap-4">
+                <form onSubmit={handleSubmit} className="w-96 mx-auto my-12 flex flex-col gap-4">
                     <p className="font-medium">Log in to your Udemy account</p>
                     <div className="flex flex-col gap-2">
                         <button className="hover:bg-gray-100 w-full h-12 border border-black flex items-center px-3 py-2 gap-2">
@@ -61,10 +105,12 @@ function Login() {
                             <span className="font-medium">Continue with Apple</span>
                         </button>
                         <div className="w-full h-12 border border-black px-3 py-2 flex items-center">
-                            <input className="font-medium focus:outline-0" type="text" id="email" placeholder="Email"></input>
+                            <input name="username" className="font-medium focus:outline-0" type="text" id="email" placeholder="Email"
+                                value={username} onChange={e => setUsername(e.target.value)}></input>
                         </div>
                         <div className="w-full h-12 border border-black px-3 py-2 flex items-center">
-                            <input className="font-medium focus:outline-0" type="text" id="password" placeholder="Password"></input>
+                            <input name="password" className="font-medium focus:outline-0" id="password" placeholder="Password"
+                                type="password" value={password} onChange={e => setPassword(e.target.value)}></input>
                         </div>
                     </div>
                     <button type="submit" className="mt-1 bg-purple-600 hover:bg-secondary-dark font-medium text-white py-3">Log
@@ -87,7 +133,7 @@ function Login() {
 
             </div>
 
-            <div className="w-full bg-grayDark text-white pt-8 mt-10">
+            {/* <div className="w-full bg-grayDark text-white pt-8 mt-10">
                 <div className="flex justify-between items-center px-10">
                     <p className="font-medium text-2xl whitespace-nowrap">Top companies choose
                         <span className="text-secondary-light text-2xl font-medium">Udemy Business</span>
@@ -140,7 +186,7 @@ function Login() {
                         alt="udemy-logo"></img>
                     <p>© 2024 Udemy, Inc.</p>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
