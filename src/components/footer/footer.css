@@ -7,11 +7,6 @@
   align-items: center;
 }
 
-.footer .upperDiv {
-  width: 94%;
-  position: relative;
-}
-
 .footer .upperDiv .linksContainer {
   display: flex;
   justify-content: space-between;

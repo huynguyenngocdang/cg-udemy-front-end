@@ -9,7 +9,7 @@ let spacing = "#ffffff";
 function SignUp() {
     return (
         <div className="w-full min-h-full text-primary overflow-x-hidden">
-            <div class="w-full h-16 py-3 px-6 shadow flex items-center justify-between gap-8">
+            {/* <div class="w-full h-16 py-3 px-6 shadow flex items-center justify-between gap-8">
                 <img class="py-1.5 h-full w-auto" src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy.svg" alt="Udemy"></img>
                 <a class=" hover:text-secondary-bold" href="">Categories</a>
                 <form
@@ -35,7 +35,7 @@ function SignUp() {
                         <i class="fa-solid fa-globe"></i>
                     </button>
                 </div>
-            </div>
+            </div> */}
 
             <div class="w-full">
                 <form class="w-96 mx-auto my-12 flex flex-col gap-4">
@@ -77,7 +77,7 @@ function SignUp() {
 
             </div>
 
-            <div class="w-full bg-grayDark text-white pt-8 mt-10">
+            {/* <div class="w-full bg-grayDark text-white pt-8 mt-10">
                 <div class="flex justify-between items-center px-10">
                     <p class="font-medium text-2xl whitespace-nowrap">Top companies choose
                         <span class="text-secondary-light text-2xl font-medium">Udemy Business</span>
@@ -130,7 +130,7 @@ function SignUp() {
                         alt="udemy-logo"></img>
                     <p>© 2024 Udemy, Inc.</p>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

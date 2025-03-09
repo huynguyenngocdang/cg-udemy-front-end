@@ -20,6 +20,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  width: 100px;
 }
 
 .headerPrimary .part {
@@ -42,7 +43,7 @@
   border: 1px #64635e solid;
   font-size: 0.9rem;
   height: 45px;
-  width: 180%;
+  width: 148%;
   padding-left: 7%;
 }
 
@@ -108,9 +109,13 @@
   border-color: #0f7c90;
 }
 
+.headerPrimary .login a:hover {
+  color: #ffffff;
+}
+
 .headerPrimary .login:hover {
-  color: #054f5c;
-  border-color: #054f5c;
+  color: #ffffff;
+  background-color: #054f5c;
 }
 
 .headerPrimary .signup {
@@ -120,7 +125,12 @@
 }
 
 .headerPrimary .signup:hover {
-  background-color: #054f5c;
+  background-color: #000000;
+  color: #0099ff;
+}
+
+.headerPrimary .signup a:hover {
+  color: #0099ff;
   border-color: #054f5c;
 }
 
@@ -162,8 +172,8 @@
 }
 
 .dropbtn {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #00eeff;
+  color: rgb(0, 0, 0);
   padding: 16px;
   font-size: 16px;
   border: none;
@@ -181,7 +191,7 @@
   top:100%;
   left: 0%;
   background-color: #f9f9f9;
-  color: #3e8e41;
+  color: #00d9ff;
   min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
@@ -211,5 +221,5 @@
 }
 
 .dropdown:hover .dropbtn {
-  background-color: #3e8e41;
+  background-color: #00eeff;
 }

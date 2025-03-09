@@ -1,50 +1,46 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import axios from 'axios';
 import "./headerPrimary.css";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import axios from 'axios';
 import { Link } from "react-router-dom";
 import _ from 'lodash';
+import Cart from "../homeContent/cart";
 
 const DropdownItem = ({ title }) => (
   <a className="item" href="#">{title}</a>
 );
 
-const DropdownSubmenu = ({ title, items, isOpen, handleToggle }) => {
+const DropdownSubmenu = ({ title }) => {
+
   return (
     <div className="dropdown-submenu">
-      <a href="#" className="test" onClick={handleToggle}>{title}</a>
-      {isOpen && (
-        <ul className="dropdown-menu">
-          {items.map((item, index) => (
-            <DropdownItem key={index} title={item} />
-          ))}
-        </ul>
-      )}
+      <a href={`/courses/${title}`} className="test" >{title}</a>
     </div>
   );
 };
 
-const Dropdown = ({ title, items }) => {
-  const [openIndex, setOpenIndex] = useState(null);
+const Dropdown = ({ title }) => {
+  const [items, setItems] = useState([]);
 
-  const handleToggle = (index) => (e) => {
-    e.preventDefault();
-    setOpenIndex(openIndex === index ? null : index);
+  const handleMouseEnter = () => {
+    if (items.length == 0) {
+      axios.get('http://localhost:8080/api/categories').then(response => {
+        console.log(response.data)
+        setItems(response.data);
+      });
+    }
   };
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" onMouseEnter={handleMouseEnter}>
       <button className="dropbtn">{title}</button>
       <div className="dropdown-content">
         {items.map((item, index) => (
           <DropdownSubmenu
             key={index}
-            title={item.title}
-            items={item.items}
-            isOpen={openIndex === index}
-            handleToggle={handleToggle(index)}
+            title={item}
           />
         ))}
       </div>
@@ -52,76 +48,9 @@ const Dropdown = ({ title, items }) => {
   );
 };
 
-const productsData = [
-  { id: 1, name: 'web development bootcamp', description: 'Mô tả sản phẩm 1' },
-  { id: 2, name: 'web developer bootcamp', description: 'Mô tả sản phẩm 2' },
-];
-
-const keywordsData = ['web development', 'web design', 'webdriver', 'Sản phẩm 4'];
-const dropdownItems = [
-  {
-    title: 'Web development',
-    items: ['HTML', 'CSS']
-  },
-  {
-    title: 'Data science',
-    items: ['Machine learning', 'Deep learning']
-  }
-];
-
-function Search() {
-  const [input, setInput] = useState('');
-  const [products, setProducts] = useState([]);
-  const [keywords, setKeywords] = useState([]);
-
-  const handleInputChange = (event) => {
-    setInput(event.target.value);
-    const filteredProducts = productsData.filter(product => product.name.includes(event.target.value));
-    setProducts(filteredProducts);
-    const filteredKeywords = keywordsData.filter(keyword => keyword.includes(event.target.value));
-    setKeywords(filteredKeywords);
-  };
-
-  const handleProductClick = (productId) => {
-    const productDetails = productsData.find(product => product.id === productId);
-    console.log(productDetails);
-  };
-
-  const handleKeywordClick = (keyword) => {
-    const filteredProducts = productsData.filter(product => product.name.includes(keyword));
-    setProducts(filteredProducts);
-  };
-
-  return (
-    <div>
-      <input
-        type="text"
-        value={input}
-        className="searchBar"
-        placeholder="Tìm kiếm..."
-        onChange={handleInputChange}
-      />
-      {input && (
-        <ul className="itemMatch">
-          {keywords.map((keyword, index) => (
-            <li className="groupSearch" key={`keyword-${index}`} onClick={() => handleKeywordClick(keyword)}>
-              <SearchOutlinedIcon className="icon" /> {keyword}
-            </li>
-          ))}
-          {products.map((product, index) => (
-            <li className="groupSearch" key={`product-${index}`} onClick={() => handleProductClick(product.id)}>
-              (ID: {product.id})  {product.name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
-
-async function fetchProducts(keyword) {
+async function getProducts(keyword) {
   try {
-    const response = await axios.get(`http://65faa0933909a9a65b1af31d.mockapi.io/api/products?search=${keyword}`);
+    const response = await axios.get(`http://localhost:8080/api/courses/?search=${keyword}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -137,10 +66,9 @@ const SearchComponent = () => {
   useEffect(() => {
     const fetchSuggestionsAndProducts = async () => {
       if (searchValue) {
-        const response = await axios.get(`http://65faa0933909a9a65b1af31d.mockapi.io/api/suggesions?search=${searchValue}`);
+        const response = await axios.get(`http://localhost:8080/api/courses/query?search=${searchValue}`);
         setSuggestions(response.data);
-        const response1 = await axios.get(`http://65faa0933909a9a65b1af31d.mockapi.io/api/products?search=${searchValue}`);
-        setProducts(response1.data);
+        setProducts(response.data);
       } else {
         setSuggestions([]);
         setProducts([]);
@@ -149,14 +77,9 @@ const SearchComponent = () => {
 
     const debouncedFn = _.debounce(() => {
       fetchSuggestionsAndProducts();
-    }, 500); // delay in ms
+    }, 500);
 
     debouncedFn();
-
-    // Cleanup function
-    return () => {
-      debouncedFn.cancel();
-    };
   }, [searchValue]);
 
 
@@ -171,12 +94,12 @@ const SearchComponent = () => {
       <ul className="itemMatch">
         {suggestions.map(suggestion => (
           <div className="groupSearch" key={suggestion.id}>
-            <Link to={`/products/${suggestion.name}`} onClick={() => { setSuggestions([]); setProducts([]); }}><SearchOutlinedIcon className="icon" /> {suggestion.name}</Link>
+            <a href={`/courses/${suggestion.name}`} onClick={() => { setSuggestions([]); setProducts([]); }}><SearchOutlinedIcon className="icon" /> {suggestion.name}</a>
           </div>
         ))}
-        {products.map(product => (
+        {products.slice(0, 4).map(product => (
           <div className="groupSearch" key={product.id}>
-            <Link to={`/product/${product.id}`} onClick={() => { setSuggestions([]); setProducts([]); }}>(ID: {product.id})  {product.name}</Link>
+            <Link to={`/course/${product.id}`} onClick={() => { setSuggestions([]); setProducts([]); }}>(ID: {product.id})  {product.name}</Link>
           </div>
         ))}
       </ul>
@@ -189,10 +112,10 @@ function HeaderPrimary() {
     <div className="headerPrimary">
       <div className="left part">
         <div className="udemyLogo">
-          <img src="..//logo.jpg" className="logo" alt="logo"></img>
+          <Link to={"/"}><img src="..//logo.jpg" className="logo" alt="logo"></img></Link>
         </div>
         <div className="categoriesDiv">
-          <span className="categories"><Dropdown title="Categories" items={dropdownItems} /></span>
+          <span className="categories"><Dropdown title="Categories" /></span>
         </div>
       </div>
       <div className="mid part">
@@ -206,13 +129,13 @@ function HeaderPrimary() {
           <span className="business">Udemy for Business</span>
         </div>
         <div className="teachDiv">
-          <span className="teach">Teach on Udemy</span>
+          <span className="teach"><Link to={"/teacher"}>Teach on Udemy</Link></span>
         </div>
         <div className="cartDiv">
-          <ShoppingCartOutlinedIcon className="icon" />
+          <Link to="/cart"><ShoppingCartOutlinedIcon className="icon" /></Link>
         </div>
-        <div className="login button"><a href="/login">Log In</a></div>
-        <div className="signup button"><a href="/signup">Sign Up</a></div>
+        <div className="login button"><Link to={"/login"}>Log In</Link></div>
+        <div className="signup button"><Link to={"/signup"}>Sign Up</Link></div>
       </div>
     </div>
   );
