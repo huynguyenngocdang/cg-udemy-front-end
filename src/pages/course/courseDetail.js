@@ -22,7 +22,7 @@ const CourseDetail = () => {
         await fetchCourse();
     }, [id]);
 
-    const handleOnclick = (course) => {
+    const handleOnclick = (course, name) => {
         dispatch(addToCart(course));
         alert("add " + name + " to cart success");
     };
@@ -131,7 +131,7 @@ const CourseDetail = () => {
                                     </div>
                                     <div className="flex flex-col gap-4">
                                         <p className="font-medium  text-2xl">{course.price}</p>
-                                        <button onClick={() => handleOnclick(course)}
+                                        <button onClick={() => handleOnclick(course, course.name)}
                                                 className="text-center py-3 bg-white border border-primary font-medium text-lg hover:bg-gray-100">
                                             Add to cart
                                         </button>

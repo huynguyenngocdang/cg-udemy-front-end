@@ -16,7 +16,7 @@ const Img = styled('img')({
     maxHeight: '100%',
 });
 
-export default function CourseCardModule({id, name, image, description, price, productInCart, product}) {
+export default function CourseCardModule({id, name, image, description, price, productAlreadyInCart, product}) {
     const dispatch = useDispatch();
 
     function handleOnclick() {
@@ -58,8 +58,8 @@ export default function CourseCardModule({id, name, image, description, price, p
                             </Grid>
                             <Grid item>
                                 <Typography sx={{cursor: 'pointer'}} variant="body2">
-                                    <button onClick={handleOnclick} disabled={productInCart}>
-                                        {productInCart ? 'Already in cart' : 'Add to cart'}
+                                    <button onClick={handleOnclick} disabled={productAlreadyInCart}>
+                                        {productAlreadyInCart ? 'Already in cart' : 'Add to cart'}
                                     </button>
                                 </Typography>
                             </Grid>

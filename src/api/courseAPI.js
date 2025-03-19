@@ -3,7 +3,7 @@ import axios from "axios";
 const course_MANAGEMENT_API =
   "http://localhost:8080";
 
-export const findcourses = async () => {
+export const findCourses = async () => {
   let result = null;
   try {
     result = await axios.get(`${course_MANAGEMENT_API}/api/courses`);
@@ -13,7 +13,7 @@ export const findcourses = async () => {
   return result;
 };
 
-export const findcourse = async (courseId) => {
+export const findCourse = async (courseId) => {
   let result = null;
   try {
     result = await axios.get(`${course_MANAGEMENT_API}/api/courses/${courseId}`);
@@ -23,7 +23,7 @@ export const findcourse = async (courseId) => {
   return result;
 };
 
-export const createcourse = async (courseData) => {
+export const createCourse = async (courseData) => {
   let result = null;
   try {
     result = await axios.post(`${course_MANAGEMENT_API}/api/courses`, courseData, {
@@ -37,7 +37,7 @@ export const createcourse = async (courseData) => {
   return result;
 };
 
-export const updatecourse = async (course) => {
+export const updateCourse = async (course) => {
   let result = null;
   try {
     result = await axios.put(`${course_MANAGEMENT_API}/api/courses/${course.id}`, course);
@@ -47,7 +47,7 @@ export const updatecourse = async (course) => {
   return result;
 };
 
-export const deletecourse = async (courseId) => {
+export const deleteCourse = async (courseId) => {
   let result = null;
   try {
     result = await axios.delete(`${course_MANAGEMENT_API}/api/courses/${courseId}`);

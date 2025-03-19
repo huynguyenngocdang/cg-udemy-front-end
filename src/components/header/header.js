@@ -5,8 +5,8 @@ import HeaderPrimary from './headerPrimary';
 function Header() {
     return (
         <div>
-        <HeaderPopup /> {/* Limited Offer PopUP on top */}
-        <HeaderPrimary /> {/* // Primary Header  */}
+            <HeaderPopup/> {/* Limited Offer PopUP on top */}
+            <HeaderPrimary/> {/* // Primary Header  */}
         </div>
     );
 }

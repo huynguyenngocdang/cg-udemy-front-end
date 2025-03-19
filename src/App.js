@@ -1,48 +1,41 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/Header";
-import HomeContent from "./components/HomeContent";
-import HomeFooter from "./components/HomeFooter";
-import Login from "./login";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CourseDetail from "./components/CourseDetail";
-import CourseList from "./components/CourseList";
-import SignUp from "./signup";
-import Cart from "./components/homeContent/cart";
-import ThankYouComponent from "./components/homeContent/thanks";
-import TeacherDashboard from "./components/TeacherDashboard";
-import Confirmation from "./components/homeContent/Confirmation";
-import CourseAdding from "./components/product/CourseAdding";
-import CourseEditing from "./components/product/CourseEditing";
-import CourseList from "./components/product/CourseList";
-import CourseDetail from "./components/product/CourseDetail";
+import Header from "./components/header/header";
+import HomePage from "./pages/homePage/HomePage";
+import Login from "./pages/authentication/login";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import SignUp from "./pages/authentication/signup";
+import Cart from "./pages/cart/cart";
+import Thanks from "./pages/thanks/thanks";
+import Order from "./pages/order/order";
+import CourseList from "./pages/course/courseList";
+import CourseDetail from "./pages/course/courseDetail";
+import CourseAdding from "./pages/course/courseAdding";
+import CourseEditing from "./pages/course/courseEditing";
+import Footer from "./components/footer/footer";
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomeContent />} />
-          <Route path="/courses/:keyword" element={<CourseList />} />
-          <Route path={"/course/:id"} element={<CourseDetail />} />
-          <Route path={"/cart"} element={<Cart />} />
-          <Route path={"/confirmation"} element={<Confirmation />} />
-          <Route path={"/thanks"} element={<ThankYouComponent />} />
-          <Route path={"/teacher"} element={<CourseList />} />
-          <Route path={`/login`} element={<Login />} />
-          <Route path={`/signup`} element={<SignUp />} />
-          <Route path={`/products/:productId`} element={<CourseDetail />} />
-          <Route path={"/products/add"} element={<CourseAdding />} />
-          <Route path={`/products/edit/:productId`} element={<CourseEditing />} />
-        </Routes>
-        <HomeFooter />
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <Header/>
+                <Routes>
+                    <Route path={"/"} element={<HomePage/>}/>
+                    <Route path={"/courses/:keyword"} element={<CourseList/>}/>
+                    <Route path={"/courses/:id"} element={<CourseDetail/>}/>
+                    <Route path={"/cart"} element={<Cart/>}/>
+                    <Route path={"/order"} element={<Order/>}/>
+                    <Route path={"/thanks"} element={<Thanks/>}/>
+                    <Route path={"/teacher"} element={<CourseList/>}/>
+                    <Route path={"/login"} element={<Login/>}/>
+                    <Route path={"/signup"} element={<SignUp/>}/>
+                    <Route path={"/course/add"} element={<CourseAdding/>}/>
+                    <Route path={"/course/edit/:courseId"} element={<CourseEditing/>}/>
+                </Routes>
+                <Footer/>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;
-
-
-

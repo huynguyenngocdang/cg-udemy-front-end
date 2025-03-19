@@ -6,7 +6,7 @@ import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import { Link } from "react-router-dom";
 import _ from 'lodash';
-import Cart from "../homeContent/cart";
+import Cart from "../../pages/cart/cart";
 
 const DropdownItem = ({ title }) => (
   <a className="item" href="#">{title}</a>
